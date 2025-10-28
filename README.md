@@ -1,1 +1,1 @@
-clang main.c
+gcc -std=c23 main.c
