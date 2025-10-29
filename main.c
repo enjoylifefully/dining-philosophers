@@ -7,9 +7,10 @@
 #include <time.h>
 #include <unistd.h>
 
-constexpr size_t N = 10;
+constexpr size_t N = 5;
 
 enum state { STATE_THINKING, STATE_HUNGRY, STATE_EATING };
+
 typedef enum state State;
 
 static inline size_t left(size_t i) {
@@ -51,11 +52,11 @@ void test(size_t i) {
 }
 
 void think(size_t i) {
-    size_t duration = rand_inclusive(2000, 3000);
+    size_t duration_ms = rand_inclusive(2000, 3000);
 
-    printf("%3zu está pensando (%zums)\n", i, duration);
+    printf("%3zu está pensando (%zums)\n", i, duration_ms);
 
-    usleep((useconds_t)duration * 1000);
+    sleep_ms(duration_ms);
 }
 
 void take_forks(size_t i) {
@@ -74,11 +75,11 @@ void take_forks(size_t i) {
 }
 
 void eat(size_t i) {
-    uint32_t duration = rand_inclusive(2000, 3000);
+    uint32_t durantion_ms = rand_inclusive(2000, 3000);
 
-    printf("%3zu está comendo (%ums)\n", i, duration);
+    printf("%3zu está comendo (%ums)\n", i, durantion_ms);
 
-    usleep((useconds_t)(duration * 1000));
+    sleep_ms(durantion_ms);
 }
 
 void put_forks(size_t i) {
