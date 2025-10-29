@@ -7,7 +7,7 @@
 #include <time.h>
 #include <unistd.h>
 
-constexpr size_t N = 5;
+constexpr size_t N = 10;
 
 enum state { STATE_THINKING, STATE_HUNGRY, STATE_EATING };
 typedef enum state State;
@@ -24,7 +24,7 @@ State g_state[N];
 pthread_mutex_t g_state_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t g_can_eat[N];
 
-static void sleep_ms(uint32_t ms) {
+void sleep_ms(uint32_t ms) {
     struct timespec ts;
 
     ts.tv_sec = ms / 1000;
