@@ -22,7 +22,7 @@ static inline size_t right(size_t i) {
 
 State g_state[N];
 pthread_mutex_t g_state_mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t g_can_eat_cond[N];
+pthread_cond_t g_can_eat[N];
 
 static void sleep_ms(uint32_t ms) {
     struct timespec ts;
@@ -46,7 +46,7 @@ void test(size_t i) {
         g_state[right(i)] != STATE_EATING) {
         g_state[i] = STATE_EATING;
 
-        pthread_cond_signal(&g_can_eat_cond[i]);
+        pthread_cond_signal(&g_can_eat[i]);
     }
 }
 
@@ -67,7 +67,7 @@ void take_forks(size_t i) {
     test(i);
 
     while (g_state[i] != STATE_EATING) {
-        pthread_cond_wait(&g_can_eat_cond[i], &g_state_mutex);
+        pthread_cond_wait(&g_can_eat[i], &g_state_mutex);
     }
 
     pthread_mutex_unlock(&g_state_mutex);
@@ -107,7 +107,7 @@ int main() {
     for (size_t i = 0; i < N; ++i) {
         g_state[i] = STATE_THINKING;
 
-        pthread_cond_init(&g_can_eat_cond[i], NULL);
+        pthread_cond_init(&g_can_eat[i], NULL);
     }
 
     pthread_t threads[N];
@@ -123,7 +123,7 @@ int main() {
     }
 
     for (size_t i = 0; i < N; ++i) {
-        pthread_cond_destroy(&g_can_eat_cond[i]);
+        pthread_cond_destroy(&g_can_eat[i]);
     }
 
     pthread_mutex_destroy(&g_state_mutex);
